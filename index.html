@@ -1,0 +1,194 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Chúc mừng năm mới</title>
+    <style>
+        @import url("https://fonts.googleapis.com/css2?family=Josefin+Sans:wght@500&display=swap");
+
+        * {
+            padding: 0;
+            margin: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            overflow: hidden;
+            background: #161a23;
+        }
+
+        .homepage {
+            font-family: "Josefin Sans", sans-serif;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            min-height: 100vh;
+            flex-direction: column;
+        }
+
+        h1 {
+            display: none;
+            font-size: 5rem;
+            margin-bottom: 100px;
+            color: #df2b60;
+            position: absolute;
+            top: 30%;
+            text-shadow: 0 0 5px #df2b60;
+        }
+
+        h1 span {
+            display: flex;
+            position: absolute;
+            left: 50%;
+            margin: 10px 0;
+            transform: translate(-50%);
+        }
+
+        #time {
+            display: flex;
+        }
+
+        #time div {
+            display: flex;
+            align-items: center;
+            color: #fff;
+            flex-direction: column;
+            font-size: 3rem;
+            font-weight: 600;
+            padding: 1rem;
+            margin: 3rem;
+            position: relative;
+            top: 5rem;
+        }
+
+        #time div span {
+            font-size: 1.5rem;
+            margin: 10px 0;
+            text-transform: capitalize;
+        }
+
+        #time div::before {
+            content: "";
+            position: absolute;
+            width: 120px;
+            height: 5px;
+            background-color: var(--color);
+            bottom: 0;
+            border-radius: 10px;
+            box-shadow: 0 0 10px var(--color);
+        }
+
+        #firework-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+        }
+
+        .firework {
+            position: absolute;
+            width: 3px;
+            height: 3px;
+            border-radius: 50%;
+            -webkit-border-radius: 50%;
+            -moz-border-radius: 50%;
+            -ms-border-radius: 50%;
+            -o-border-radius: 50%;
+            background: #fff;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="homepage">
+        <h1 class="">Chúc Mừng Năm Mới <br /><span class="">2024</span></h1>
+        <div id="time">
+            <div id="days" style="--color: #f3ff77"><br /><span>Days</span></div>
+            <div id="hours" style="--color: #3ccbff"><br /><span>Hours</span></div>
+            <div id="minutes" style="--color: #fe3d6c">
+                <br /><span>Minutes</span>
+            </div>
+            <div id="seconds" style="--color: #3fff7c">
+                <br /><span>Seconds</span>
+            </div>
+        </div>
+        <div id="firework-container"></div>
+    </div>
+    <script>
+        var countDownDate = new Date("Feb 10, 2024 00:00:00");
+        var x = setInterval(function () {
+            var now = new Date().getTime();
+            var distance = countDownDate - now;
+            if (distance < 0) distance = 0;
+            var days = Math.floor(distance / (3600 * 24 * 1000));
+            var hours = Math.floor((distance % (3600 * 24 * 1000)) / (3600 * 1000));
+            var minutes = Math.floor((distance % (3600 * 1000)) / (60 * 1000));
+            var seconds = Math.floor((distance % (60 * 1000)) / 1000);
+            document.getElementById("days").innerHTML =
+                days + "<br><span>Days</span>";
+            document.getElementById("hours").innerHTML =
+                hours + "<br><span>Hours</span>";
+            document.getElementById("minutes").innerHTML =
+                minutes + "<br><span>Minutes</span>";
+            document.getElementById("seconds").innerHTML =
+                seconds + "<br><span>Seconds</span>";
+            if (distance === 0) {
+                clearInterval(x);
+                document.querySelector("h1").style.display = "block";
+
+                const fireworkCount = 550;
+                const fireworkContainer = document.getElementById("firework-container");
+
+                for (let i = 0; i < fireworkCount; i++) {
+                    const firework = document.createElement("div");
+                    firework.classList.add("firework");
+                    fireworkContainer.appendChild(firework);
+
+                    animateFirework(firework);
+                }
+
+                function animateFirework(firework) {
+                    const colors = ["#ff0000", "#00ff00", "#0000ff", "#ffff00", "#00ffff", "#ff00ff", , "#ffffff"];
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    firework.style.backgroundColor = color;
+
+                    //Calculate random starting position and size for the firework
+                    const startX = Math.random() * window.innerWidth;
+                    const startY = Math.random() * window.innerHeight;
+                    const startSize = Math.random() * 3 + 1;
+                    firework.style.left = startX + "px";
+                    firework.style.top = startY + "px";
+                    firework.style.transform = `scale(${startSize})`;
+
+                    //Calculate random ending position and size for the fire work
+                    const endX = Math.random() * window.innerWidth;
+                    const endY = Math.random() * window.innerHeight;
+                    const endSize = Math.random() * 3 + 1;
+
+                    // Animate the firework
+                    const duration = Math.random() * 3 + 3; // duration between 3 and 6 seconds
+                    firework.animate(
+                        [
+                            {
+                                transform: `translate(${startX - endX}px, ${startY - endY}px) scale(${startSize})`,
+                            },
+                            {
+                                transform: `translate(${-endX}px, ${-endY}px) scale(${endSize})`,
+                            },
+                        ],
+                        {
+                            duration: duration * 1000,
+                            easing: "ease-out",
+                            fill: "both",
+                        }
+                    ).onfinish = function () {
+                        animateFirework(firework);
+                    };
+                }
+            }
+        });
+    </script>
+</body>
+
+</html>
